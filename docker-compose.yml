@@ -1,0 +1,33 @@
+---
+version: "3.8"
+services:
+  volumes-provisioner:
+    image: hasnat/volumes-provisioner
+    environment:
+      PROVISION_DIRECTORIES: "1000:1000:0755:/data"
+    volumes:
+      - hass-data:/data
+
+  homeassistant:
+    image: test
+    restart: unless-stopped
+    ports:
+     - "8123:8123"
+    depends_on:
+      - volumes-provisioner
+    volumes:
+     - hass-data:/data
+
+  postgres:
+    image: postgres:11.4-alpine
+    environment:
+      - POSTGRES_USER=hass
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=home_assistant_db
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - pg-data:/var/lib/postgresql/data/pgdata
+
+volumes:
+  hass-data:
+  pg-data:

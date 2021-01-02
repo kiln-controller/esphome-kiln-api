@@ -1,0 +1,12 @@
+---
+title: Professor Pat Pending
+views:
+    # View tab title.
+  - title: Home
+    panel: true
+    cards:
+      - type: custom:scheduler-card
+        groups:
+        - name: Ovens
+          include:
+            - climate
