@@ -19,7 +19,7 @@ services:
      - hass-data:/data
 
   postgres:
-    image: postgres:11.4-alpine
+    image: postgres:15-alpine
     environment:
       - POSTGRES_USER=hass
       - POSTGRES_PASSWORD=password

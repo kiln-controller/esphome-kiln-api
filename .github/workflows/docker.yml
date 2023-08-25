@@ -1,0 +1,11 @@
+---
+on:
+  - push
+  - workflow_dispatch
+
+jobs:
+  docker:
+    uses: LANsible/github-workflows/.github/workflows/docker-build.yml@main
+    with:
+      image_name: wilmardo/oven-automation
+    secrets: inherit

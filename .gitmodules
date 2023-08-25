@@ -1,0 +1,8 @@
+[submodule "config/custom_components/scheduler-component"]
+	path = config/custom_components/scheduler-component
+	url = https://github.com/nielsfaber/scheduler-component.git
+	branch = main
+[submodule "config/www/scheduler-card"]
+	path = config/www/scheduler-card
+	url = https://github.com/nielsfaber/scheduler-card.git
+	branch = main
