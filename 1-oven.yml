@@ -43,10 +43,28 @@ spi:
 sensor:
   - platform: max6675
     name: Oven Temperature
+    id: temperature
     cs_pin: D3
     update_interval: 60s
 
 switch:
   - platform: gpio
-    name: Oven on/off
+    name: Oven Heater
+    id: heater
     pin: D5
+
+climate:
+  - platform: thermostat
+    name: "Thermostat Climate Controller"
+    sensor: oven_temperature
+    min_heating_off_time: 300s
+    min_heating_run_time: 300s
+    min_idle_time: 30s
+    heat_action:
+      - switch.turn_on: heater
+    idle_action:
+      - switch.turn_off: heater
+    default_preset: Home
+    preset:
+      - name: Home
+        default_target_temperature_low: 20 °C
