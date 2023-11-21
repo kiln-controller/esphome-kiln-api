@@ -1,5 +1,5 @@
 # Esphome builddirs
 .esphome/
-oven_1/
+.vscode/
 
 secrets.yaml
