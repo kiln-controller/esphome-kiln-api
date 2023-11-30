@@ -43,4 +43,4 @@ export interface KilnState {
     steps: Schedule
   };
 }
-export const current_state = writable<KilnState>(JSON.parse('{"step":0,"schedule":{"name":"","steps":[]}}'));
+export const current_state = writable<KilnState>(JSON.parse('{}'));

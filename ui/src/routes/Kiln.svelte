@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { stored_logs, current_state} from "../lib/stores";
+  import { stored_logs, current_state } from "../lib/stores";
   import { onMount } from 'svelte';
   import {
       Icon,
@@ -88,7 +88,6 @@ tbody {
 
 <Row>
   <Col>
-    <Button class="float-end me-1" color="danger" on:click={() => toggleStopModalOpen()}><Icon name="stop" /></Button>
     <Modal body header="Confirm upload schedule" isOpen={stop_modal_open} toggle={toggleStopModalOpen}>
       Are you sure you want to stop the running <code>{$current_state.schedule.name}</code> schedule on the kiln?
       <Row class="mt-4">
@@ -99,13 +98,26 @@ tbody {
       </Row>
     </Modal>
 
-    <span class="h2 ps-2">{$current_state.schedule.name}</span>
-    Current running step: {$current_state.step}
-    Current temperature: {Math.round($current_state.temperature)}
-    Current  {$current_state.schedule.steps}
-    Remaining time in the schedule: 
-    <div bind:this={plotContainer}></div>
-
+    {#if $current_state?.schedule?.name !== ""}
+      <span class="h2 ps-2">{$current_state.schedule.name}</span><br>
+      <Button class="float-end me-1" color="danger" on:click={() => toggleStopModalOpen()}><Icon name="stop" /></Button>
+      <span class="ps-2">
+      Current temperature: {Math.round($current_state.temperature)}<br>
+      Current running step: {$current_state.step}<br>
+      Current  {$current_state.schedule.steps}<br>
+      Remaining time in the schedule: <br>
+      </span>
+      {#key $current_state.temperature}
+        <div bind:this={plotContainer}></div>
+      {/key}
+    {:else if $current_state?.schedule === null}
+      <span class="h2 ps-2">No schedule running</span><br>
+      <span class="ps-2">
+      Current temperature: {Math.round($current_state.temperature)}<br>
+      </span>
+    {:else}
+      <span class="h2 ps-2">Not connected to kiln</span><br>
+    {/if}
   </Col>
   <Col>
     <Table borderless size="sm">
