@@ -98,7 +98,7 @@ tbody {
       </Row>
     </Modal>
 
-    {#if $current_state?.schedule?.name !== ""}
+    {#if $current_state.schedule.name !== ""}
       <span class="h2 ps-2">{$current_state.schedule.name}</span><br>
       <Button class="float-end me-1" color="danger" on:click={() => toggleStopModalOpen()}><Icon name="stop" /></Button>
       <span class="ps-2">
@@ -110,13 +110,11 @@ tbody {
       {#key $current_state.temperature}
         <div bind:this={plotContainer}></div>
       {/key}
-    {:else if $current_state?.schedule === null}
+    {:else}
       <span class="h2 ps-2">No schedule running</span><br>
       <span class="ps-2">
       Current temperature: {Math.round($current_state.temperature)}<br>
       </span>
-    {:else}
-      <span class="h2 ps-2">Not connected to kiln</span><br>
     {/if}
   </Col>
   <Col>

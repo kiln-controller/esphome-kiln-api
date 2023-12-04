@@ -53,6 +53,11 @@ curl -X POST http://glas-kiln.local/kiln/schedule \
 - heating, target_temperature is getting updates each 10s until step_target_temp is reached
 - hold, 
 
+### UI
+
+Not using sveltekit but svelte + spa-router due this issue:
+https://github.com/sveltejs/kit/issues/3882
+
 ## Credits/Inspiration
 
 * [jbruce12000/kiln-controller](https://github.com/jbruce12000/kiln-controller/tree/master/public)
