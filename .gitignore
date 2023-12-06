@@ -1,5 +1,6 @@
 # Esphome builddirs
 .esphome/
 .vscode/
+__pycache__
 
 secrets.yaml
