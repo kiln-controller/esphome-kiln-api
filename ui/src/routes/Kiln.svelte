@@ -1,6 +1,6 @@
 <script lang="ts">
   import { stored_logs, current_state } from "../lib/stores";
-  import { onMount } from 'svelte';
+  import uPlot from "uplot";
   import {
       Icon,
       Button,
@@ -22,15 +22,12 @@
     if (!response.ok) { console.log(response) };
   }
 
-  function calculateRemainingTime() {
-
-  }
-
   // uplot: https://github.com/leeoniya/uPlot/tree/master/docs
   let plotContainer;
-  function redraw(uPlot) {
+  $: $current_state, redraw();
+  function redraw() {
     let x: Array<number> = [Date.now()/1000 - $current_state.runtime];  // timestamps
-    let y: Array<number> = [0];  // temperature
+    let y: Array<number> = [$current_state.start_temperature];  // temperature
     for (let step of $current_state.schedule.steps) {
       // previous timestamp plus time to reach target in seconds
       let ramptime: number = x.at(-1) + (step[1]/step[0])*3600;
@@ -48,15 +45,10 @@
     let plot = new uPlot(opts, data, plotContainer);
 
     plot.setCursor({
-      // top: plot.valToPos($current_state.temperature, 'x'),
-      // left: plot.valToPos(Date.now()/1000, 'y'),
+      top: plot.valToPos($current_state.temperature, 'x'),
+      left: plot.valToPos(Date.now()/1000, 'y'),
     })
   }
-  onMount(async () => {
-    const uplotModule = await import('uplot');
-    const uPlot = uplotModule.default;
-    redraw(uPlot);
-  })
 </script>
 <style lang=css>
 tbody {
@@ -105,11 +97,8 @@ tbody {
       Current temperature: {Math.round($current_state.temperature)}<br>
       Current running step: {$current_state.step}<br>
       Current  {$current_state.schedule.steps}<br>
-      Remaining time in the schedule: <br>
       </span>
-      {#key $current_state.temperature}
-        <div bind:this={plotContainer}></div>
-      {/key}
+      <div bind:this={plotContainer}></div>
     {:else}
       <span class="h2 ps-2">No schedule running</span><br>
       <span class="ps-2">

@@ -41,6 +41,8 @@ class KilnApi : public PollingComponent, public AsyncWebHandler {
 
   // runtime in seconds
   int runtime = 0;
+  // starting temperature
+  int schedule_start_temperature = 0;
   // schedule name
   std::string schedule_name = "";
   // array by three (ramp in celsius p/h, target temp in celsius, hold in minutes)

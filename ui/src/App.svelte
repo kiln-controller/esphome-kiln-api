@@ -50,7 +50,7 @@
       when: new Date().toTimeString().split(" ")[0],
     } as RecordConfig;
 
-    $stored_logs.push(record);
+    $stored_logs.unshift(record);
     $stored_logs = $stored_logs;
   });
   kiln_api.addEventListener("state", (e: MessageEvent) => {

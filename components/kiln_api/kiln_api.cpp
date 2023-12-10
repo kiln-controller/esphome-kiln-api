@@ -45,6 +45,11 @@ void KilnApi::handle_schedule_request(AsyncWebServerRequest *request) {
     // reset current progress
     this->reset_progress();
 
+    // set the target temperature to the current temperature for the update loop to start at the right temp
+    kiln_->target_temperature = kiln_->current_temperature;
+    // set the schedule start temperature to the current
+    this->schedule_start_temperature = kiln_->target_temperature;
+
     if (request->_tempObject != NULL) {
       // https://github.com/esphome/esphome/blob/d82471942f91a85fe5e4812edfd954f47af74c2b/esphome/components/mqtt/mqtt_client.cpp#L413
       json::parse_json(std::string((char *)request->_tempObject), [&](JsonObject x) {
@@ -105,6 +110,7 @@ std::string KilnApi::get_state() {
   return json::build_json([this](JsonObject root) {
     root["step"] = this->current_step;
     root["runtime"] = this->runtime;
+    root["start_temperature"] = this->schedule_start_temperature;
     root["temperature"] = this->kiln_->current_temperature;
     root["schedule"]["name"] = this->schedule_name;
     root["schedule"]["steps"] = this->schedule;
@@ -127,14 +133,14 @@ void KilnApi::update() {
     return;
   }
 
-  // update runtime
+  // update runtime seconds
   this->runtime++;
 
   // extract data
   int ramp = this->schedule[current_step][0];
   int target = this->schedule[current_step][1];
   int hold = this->schedule[current_step][2];
-  // divide 3600 to make ramp calculated each 1s
+  // divide 3600 to make ramp per second 1s
   float ramp_calculated = (float)ramp / (float)3600;
 
   // if target is lower then previous it is a cooling cycle, negate ramp_calculated

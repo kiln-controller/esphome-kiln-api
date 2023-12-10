@@ -14,7 +14,7 @@ ota:
 
 # Enable logging
 logger:
-  level: DEBUG
+  level: INFO
 
 # Enable status led on onboard led
 status_led:
@@ -64,22 +64,22 @@ external_components:
 output:
   - platform: slow_pwm
     id: heater
-    period: 60s
-    pin: D5
+    period: 15s
+    pin: D8
 
 sensor:
-  # - platform: max6675
-  #   name: Kiln Temperature
-  #   id: kiln_temperature
-  #   cs_pin: D2
-  #   update_interval: 1s
-  # NOTE: just for testing
-  - platform: template
+  - platform: max6675
     name: Kiln Temperature
     id: kiln_temperature
-    update_interval: 10s
-    lambda: |-
-      return id(kiln).target_temperature;
+    cs_pin: D2
+    update_interval: 1s
+  # NOTE: just for testing
+  # - platform: template
+  #   name: Kiln Temperature
+  #   id: kiln_temperature
+  #   update_interval: 10s
+  #   lambda: |-
+  #     return id(kiln).target_temperature;
 
 climate:
   - platform: pid
@@ -92,45 +92,14 @@ climate:
       max_temperature: 1500
       temperature_step: 0.1
     heat_output: heater
-    # TODO: needs tuning
     deadband_parameters:
-      threshold_high: 10°C
-      threshold_low: 10°C
+      threshold_high: 0.5°C
+      threshold_low: -1.0°C
+      kp_multiplier: 0.0   # proportional gain turned off inside deadband
+      ki_multiplier: 0.05  # integral accumulates at only 5% of normal ki
+      kd_multiplier: 0.0   # derviative is turned off inside deadband
+      deadband_output_averaging_samples: 15   # average the output over 15 samples within the deadband
     control_parameters:
-      kp: 0.0
-      ki: 0.0
-      kd: 0.0
-
-button:
-  - platform: template
-    name: Kiln Autotune
-    on_press:
-      - climate.pid.autotune: kiln
-
-# id(started_at) = id(my_time).utcnow().timestamp;
-# # Debug
-# text_sensor:
-#   - platform: template
-#     id: text_schedule_name
-#     name: "Schedule name"
-#     lambda: |-
-#       return schedule_name;
-#   - platform: template
-#     id: text_schedule
-#     name: "Schedule"
-#     update_interval: never
-#   - platform: template
-#     id: text_current_step
-#     name: "Current step"
-#     lambda: |-
-#       int i = current_step;
-#       std::string ret;
-#       ESP_LOGD("text_current_step", "current_step index: %i", i);
-#       if (not schedule.empty()) {
-#         for (auto & v : schedule[i]) {
-#           ret.append(std::to_string(v));
-#           ret.append(",");
-#         }
-#       }
-#       return ret;
-#     update_interval: 10s
+      kp: 0.10913
+      ki: 0.00647
+      kd: 0.45992
