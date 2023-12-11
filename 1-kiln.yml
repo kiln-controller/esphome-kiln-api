@@ -49,29 +49,28 @@ esphome:
 
 # Modules setup
 spi:
-  miso_pin: D1
-  clk_pin: D3
+  miso_pin: D2
+  clk_pin: D4
 
 # Setup API
-kiln_api:
-
 external_components:
   - source:
       type: local
       path: components/
+kiln_api:
 
 # Kiln
 output:
   - platform: slow_pwm
     id: heater
     period: 15s
-    pin: D8
+    pin: D1
 
 sensor:
   - platform: max6675
     name: Kiln Temperature
     id: kiln_temperature
-    cs_pin: D2
+    cs_pin: D3
     update_interval: 1s
   # NOTE: just for testing
   # - platform: template
