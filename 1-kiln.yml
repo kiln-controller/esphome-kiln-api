@@ -22,17 +22,12 @@ status_led:
     number: GPIO2
     inverted: True
 
-# Enable wifi with static ip
+# Enable wifi
 wifi:
+  ap: {}
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   fast_connect: true
-  manual_ip:
-    static_ip: 192.168.1.30
-    gateway: 192.168.1.1
-    subnet: 255.255.255.0
-    # needed for ntp timesync
-    dns1: 192.168.1.1
 
 # Esphome setup
 esphome:
