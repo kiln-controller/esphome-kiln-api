@@ -5,8 +5,8 @@ captive_portal:
 # Enable webserver
 web_server:
   port: 80
-  # css_url: https://kiln-controller.s3.eu-central-1.amazonaws.com/style.css
-  # js_url: https://kiln-controller.s3.eu-central-1.amazonaws.com/index.js
+  css_url: https://kiln-controller.s3.eu-central-1.amazonaws.com/style.css
+  js_url: https://kiln-controller.s3.eu-central-1.amazonaws.com/index.js
 
 # Enable ota
 ota:
@@ -48,11 +48,12 @@ spi:
   clk_pin: D4
 
 # Setup API
-external_components:
-  - source:
-      type: local
-      path: components/
 kiln_api:
+external_components:
+  - source: github://kiln-controller/esphome-kiln-api@main
+  # - source:
+  #     type: local
+  #     path: components/
 
 # Kiln
 output:
