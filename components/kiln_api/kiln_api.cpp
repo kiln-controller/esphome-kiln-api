@@ -191,7 +191,7 @@ void KilnApi::update() {
     new_target = target;
   }
   if (new_target != kiln_->target_temperature) {
-    ESP_LOGI(TAG, "Set target to %.1f", new_target);
+    ESP_LOGD(TAG, "Set target to %.1f", new_target);
     kiln_->target_temperature = new_target;
   }
 }
