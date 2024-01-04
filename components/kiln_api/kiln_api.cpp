@@ -180,7 +180,7 @@ void KilnApi::update() {
   // just keep the hold going
   } else if (this->remaining_hold > 1) {
     this->remaining_hold--;
-    ESP_LOGI(TAG, "Hold time remaining: %ih %im %is", this->remaining_hold/3600, (this->remaining_hold % 3600) /60, this->remaining_hold % 60);
+    ESP_LOGD(TAG, "Hold time remaining: %ih %im %is", this->remaining_hold/3600, (this->remaining_hold % 3600) /60, this->remaining_hold % 60);
     return;
   }
 
