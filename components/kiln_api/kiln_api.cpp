@@ -65,6 +65,7 @@ void KilnApi::handle_schedule_request(AsyncWebServerRequest *request) {
           request->send(500, "application/json", "{\"status\": \"error\", \"reason: \"missing name or schedule key in JSON\"}");
         }
       });
+      ESP_LOGI(TAG, "Starting schedule %s, heating kiln", this->schedule_name.c_str());
       request->send(200, "application/json", "{\"status\": \"ok\"}");
     } else { // no _tempObject
       request->send(500, "application/json", "{\"status\": \"error\", \"reason: \"invalid JSON body\"}");
