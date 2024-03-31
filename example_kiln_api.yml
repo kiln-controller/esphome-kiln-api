@@ -5,7 +5,7 @@ captive_portal:
 # Enable webserver
 web_server:
   port: 80
-  css_url: https://kiln-controller.s3.eu-central-1.amazonaws.com/style.css
+  css_url: https://kiln-controller.s3.eu-central-1.amazonaws.com/index.css
   js_url: https://kiln-controller.s3.eu-central-1.amazonaws.com/index.js
 
 # Enable ota
