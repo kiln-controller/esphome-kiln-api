@@ -51,8 +51,8 @@ void KilnApi::handle_schedule_request(AsyncWebServerRequest *request) {
     this->schedule_start_temperature = kiln_->target_temperature;
 
     if (request->_tempObject != NULL) {
-      // https://github.com/esphome/esphome/blob/d82471942f91a85fe5e4812edfd954f47af74c2b/esphome/components/mqtt/mqtt_client.cpp#L413
-      json::parse_json(std::string((char *)request->_tempObject), [&](JsonObject x) {
+      // https://github.com/esphome/esphome/blob/95e45dc12c9e313cbb5787978b3e067f581c76c9/esphome/components/mqtt/mqtt_client.cpp#L413
+      json::parse_json(std::string((char *)request->_tempObject), [&](JsonObject x) -> bool {
         if (x.containsKey("name") && x.containsKey("schedule")) {
           this->schedule_name.assign(x["name"].as<std::string>());
           JsonArrayConst parsed = x["schedule"].as<JsonArrayConst>();
@@ -64,6 +64,7 @@ void KilnApi::handle_schedule_request(AsyncWebServerRequest *request) {
         } else {
           request->send(500, "application/json", "{\"status\": \"error\", \"reason: \"missing name or schedule key in JSON\"}");
         }
+        return true;
       });
       ESP_LOGI(TAG, "Starting schedule %s, heating kiln", this->schedule_name.c_str());
       request->send(200, "application/json", "{\"status\": \"ok\"}");
